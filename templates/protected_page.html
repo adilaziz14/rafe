@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Protected Page</title>
+</head>
+<body>
+	<h1>Protected Page</h1>
+	<p>Welcome, {{ session['username'] }}!</p>
+	<p>This is the protected page for non-admin users.</p>
+	<p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>
