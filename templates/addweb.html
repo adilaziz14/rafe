@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color:whitesmoke;
+            background-color: #fff;
             /* animation: bg-animation 10s ease infinite; */
         }
 
@@ -25,7 +24,7 @@
 
         form {
             background-color: #fff;
-            padding: 10px;
+            padding: 20px;
             border-radius: 5px;
             box-shadow: 0px 0px 7px 2px #ccc;
             text-align: left;
@@ -50,7 +49,7 @@
 
         input[type="submit"] {
             background-color: #e1a9cb;
-            color: black;
+            color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -74,6 +73,37 @@
 
         input[type="submit"]:hover:before {
             left: 0;
+        }
+
+        /* background animation */
+        @keyframes bg-animation {
+            0% {
+                background-color: #e8d1d9;
+            }
+
+            25% {
+                background-color: #d4e7e8;
+            }
+
+            50% {
+                background-color: #ec9b98;
+            }
+
+            75% {
+                background-color: #b0a891;
+            }
+
+            100% {
+                background-color: #b2b9b2ed;
+            }
+        }
+
+        /* responsive design */
+        @media (max-width: 768px) {
+            .container {
+                width: 80%;
+                padding-top: 30px;
+            }
         }
 
         /* 
@@ -168,10 +198,56 @@
             flex-direction: row;
             justify-content: space-between;
             box-shadow: 2px 2px 6px -4px black;
+            width: 100vw;
             margin: 0;
             padding: 10px 20px;
-            background-color:#f8f8f8;
+            background-color:white;
         }
+
+        .add-user-box {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        width: 400px;
+        margin: auto auto;
+        background-color: #f9f9f9;
+      }
+
+      .add-user-box h2 {
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+
+      .add-user-box label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .add-user-box input[type="text"],
+      .add-user-box input[type="email"],
+      .add-user-box input[type="password"],
+      .add-user-box select {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      .add-user-box button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .add-user-box button[type="submit"]:hover {
+        background-color: #0062cc;
+      }
 
         /* responsive design */
         @media (max-width: 768px) {
@@ -241,41 +317,26 @@
 
 
     </div>
-    <div class="container">
-        <h1>Share portal</h1>
-        <form method="post" action="/">
-            <label for="username">Username:</label>
-            <input type="text" name="username" required><br><br>
-              <label for="password">Password:</label>
-        <div class="password-wrapper">
-            <input type="password" name="password" id="password" required>
-            <label for="show-password">
-                <input type="checkbox" id="show-password"> Show password
-            </label>
-        </div>
-        <input type="submit" value="Login">
-        {% if error %}
+
+    <title>Add Login</title>
+      </head>
+      <body>
+        <h1>Add Login</h1>
+        <form action="/addweb/{{website}}/{{email_or_id}}/{{password}}" method="POST">
+          <label for="website">Website:</label>
+          <input type="text" id="website" name="website"><br><br>
+          <label for="email_or_id">Email/ID:</label>
+          <input type="text" id="email_or_id" name="email_or_id"><br><br>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password"><br><br>
+          <button type="submit">Submit</button>
+          {% if error %}
             <p style="color: red">{{ error }}</p>
-        {% endif %}
-    </form>
-</div>
-
-<script>
-    const passwordInput = document.getElementById("password");
-    const showPasswordCheckbox = document.getElementById("show-password");
-
-    showPasswordCheckbox.addEventListener("change", function() {
-        if (this.checked) {
-            passwordInput.type = "text";
-        } else {
-            passwordInput.type = "password";
-        }
-    });
-</script>
-
+          {% endif %}
         </form>
-    </div>
-    
-</body>
+      </body>
 
+    
+    </div>
+  </body>
 </html>

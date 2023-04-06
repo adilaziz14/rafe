@@ -34,7 +34,7 @@
         /* responsive design */
         @media (max-width: 768px) {
             .container {
-                width: 80%;
+                width: 100%;
                 padding-top: 30px;
             }
 
@@ -91,26 +91,43 @@
         	</a>
 		</div>
         
-        <!-- <div style="display: flex; justify-content: center; margin-top: 20px;"> -->
-            <ul style="display: flex; justify-content: flex-start; column-gap: 15px; list-style-type: none; margin: 0; align-items: center;">
-              <li><a href="add">Add User</a></li>
-              
-              <li><a href="users">Users</a></li>
-              
-              <li><a href="addweb">Add websites</a></li>
-              
-            </ul>
-        <!-- </div> -->
+        <div class="form-container">
+            <form id="delete-form" action="/delete" method="POST">
+              <label for="username">Username:</label>
+              <input type="text" name="username" value="{{ username }}" readonly>
+              <br>
+              <input type="submit" value="Delete">
+            </form>
+          
+            <div id="notification" style="display: none;">User successfully deleted!</div>
+          
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+          </div>
+          
+          <script>
+            const deleteForm = document.querySelector('#delete-form');
+            const notification = document.querySelector('#notification');
+          
+            deleteForm.addEventListener('submit', event => {
+              event.preventDefault();
+              const formData = new FormData(deleteForm);
+              fetch('/delete', {
+                method: 'POST',
+                body: formData
+              })
+              .then(response => {
+                if (response.ok) {
+                  notification.style.display = 'block';
+                  setTimeout(() => {
+                    notification.style.display = 'none';
+                  }, 3000);
+                }
+              })
+              .catch(error => console.error(error));
+            });
+          </script>
+          
+</body>
 
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-			<a style="text-decoration: none; color: black;" href="/logout">Logout</a>
-		</div>
-    </div>
-    
-    <div style="display: flex; flex-direction: row;  height: 82%;">
-		<a class="box" style="width: 50%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #477245; color: #fff; font-size: 28px; text-decoration: none;" href="/Rafay" id="cloud-link">Rafay</a>
-		<a class="box" style="width: 50%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #454f72; color: #fff; font-size: 28px; text-decoration: none;"  href="/Spectrocloud" id="cloud-link">Spectrocloud</a>
-	</div>
-  </body>
-</html>

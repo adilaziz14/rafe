@@ -240,42 +240,173 @@
         </div>
 
 
-    </div>
-    <div class="container">
-        <h1>Share portal</h1>
-        <form method="post" action="/">
-            <label for="username">Username:</label>
-            <input type="text" name="username" required><br><br>
-              <label for="password">Password:</label>
-        <div class="password-wrapper">
-            <input type="password" name="password" id="password" required>
-            <label for="show-password">
-                <input type="checkbox" id="show-password"> Show password
-            </label>
-        </div>
-        <input type="submit" value="Login">
-        {% if error %}
-            <p style="color: red">{{ error }}</p>
-        {% endif %}
-    </form>
-</div>
-
-<script>
-    const passwordInput = document.getElementById("password");
-    const showPasswordCheckbox = document.getElementById("show-password");
-
-    showPasswordCheckbox.addEventListener("change", function() {
-        if (this.checked) {
-            passwordInput.type = "text";
-        } else {
-            passwordInput.type = "password";
+    </div><head>
+      <title>Users</title>
+      <style>
+        h1 {
+          text-align: center;
         }
-    });
-</script>
 
-        </form>
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        th, td {
+          text-align: left;
+          padding: 12px;
+        }
+        th {
+          background-color: #f2f2f2;
+        }
+        tr:hover {
+          background-color: #f5f5f5;
+        }
+        a {
+          text-decoration: none;
+          color: #0066CC;
+        }
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #fff;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+        .dropdown button {
+          background-color: #f2f2f2;
+          color: #555;
+          font-size: 16px;
+          border: none;
+          padding: 8px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+        .dropdown button:hover {
+          background-color: #ddd;
+        }
+        .dropdown li {
+          list-style-type: none;
+          padding: 8px 12px;
+          border-bottom: 1px solid #f2f2f2;
+        }
+        .dropdown li:last-child {
+          border-bottom: none;
+        }
+        .dropdown a {
+          color: #333;
+          text-decoration: none;
+        }
+        .dropdown a:hover {
+          color: #0066CC;
+        }
+
+        .password-field {
+          display: flex;
+          align-items: center;
+        }
+
+        .password-field input {
+          margin-right: 10px; /* Add some spacing between the input and the button */
+        }
+
+        .password-field .toggle-password {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+        }
+
+        
+</style>
+<body>
+
+  
+  <body>
+    <h1>All Users</h1>
+    <div id="action-box" style="display:none;">
+      <ul id="action-list">
+      </ul>
     </div>
-    
+    <table>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>User Type</th>
+        <th>Password</th>
+        <th>Actions</th>
+      </tr>
+      {% for user in users %}
+      <tr>
+        <td>{{ user['username'] }}</td>
+        <td>{{ user['email'] }}</td>
+        <td>{{ user['user_type'] }}</td>
+        <td>
+          <div class="password-field">
+            <input type="password" value="{{ user['password'] }}">
+            <button class="toggle-password" type="button">&#x1f441;</button>
+          </div>
+        </td>
+        <td>
+          <button class="action-button">&#9634;</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  
+    <script>
+      const passwordFields = document.querySelectorAll('.password-field');
+      passwordFields.forEach(field => {
+        const input = field.querySelector('input');
+        const toggleBtn = field.querySelector('.toggle-password');
+        toggleBtn.addEventListener('click', () => {
+          if (input.type === 'password') {
+            input.type = 'text';
+            toggleBtn.innerHTML = '&#x1f441;';
+          } else {
+            input.type = 'password';
+            toggleBtn.innerHTML = '&#x1f576;';
+          }
+        });
+      });
+  
+      const actionButtons = document.querySelectorAll('.action-button');
+      const actionBox = document.querySelector('#action-box');
+      const actionList = document.querySelector('#action-list');
+  
+      actionButtons.forEach(button => {
+        button.addEventListener('click', event => {
+          const userRow = event.target.closest('tr');
+          const username = userRow.querySelector('td:nth-child(1)').textContent;
+          const email = userRow.querySelector('td:nth-child(2)').textContent;
+          const userType = userRow.querySelector('td:nth-child(3)').textContent;
+          let actionBoxHTML = `<p>Actions for user "${username}"</p><ul>`;
+          if (userType !== 'admin') {
+            actionBoxHTML += `<li><a href="/delete?username=${username}">Delete user</a></li>`;
+          }
+          actionBoxHTML += `<li><a href="/change?username=${username}&type=${userType}">Change role</a></li></ul>`;
+          actionList.innerHTML = actionBoxHTML;
+          actionBox.style.display = 'block';
+        });
+      });
+  
+      document.addEventListener('click', event => {
+        if (!event.target.matches('.action-button, #action-box *')) {
+          actionBox.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+  
+  
+  
 </body>
 
-</html>
+    

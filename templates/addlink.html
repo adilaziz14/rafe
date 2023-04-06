@@ -1,0 +1,218 @@
+<html> 
+	<head> 
+		<title></title> 
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"> 
+		<meta name="viewport" content="width=540, minimum-scale=1.0, maximum-scale=1.0"> 
+		<meta name="format-detection" content="telephone=no"> 
+		<link rel="stylesheet" href="https://isetup.o2.co.uk/resources/styles/styles.css" type="text/css" media="screen" title="no title" charset="utf-8"> 
+		<script type="text/javascript" charset="utf-8" src="https://isetup.o2.co.uk/resources/scripts/jquery.js"></script> 
+		<script type="text/javascript" charset="utf-8" src="https://isetup.o2.co.uk/resources/scripts/jquery.tools.js"></script> 
+		<script type="text/javascript" charset="utf-8" src="https://isetup.o2.co.uk/resources/scripts/scripts.js"></script> 
+			</head> 
+	<body> 
+	<script type="text/javascript" charset="utf-8"> 
+		function greyInitialButtons() {
+			$('#parent-page .button').css('color', '#777');
+			$('#parent-page .highlighting:not(.highlighted)').css('color', '#777');
+			$('#add-or-change-plan .button').css('color', null);
+			$('#edit-user-information .button').css('color', null);
+		}
+ 
+		function greySecondaryButtons() {
+			$('#parent-page .button').css('color', null);
+			$('#parent-page .highlighting').css('color', null);
+			$('#add-or-change-plan .button').css('color', '#777');
+			$('#edit-user-information .button').css('color', '#777');
+		}
+ 
+		function pushNavigationPage(id) {
+			greyInitialButtons();
+ 
+			disableHighlightingElements();
+ 
+			var parentPage = document.getElementById('parent-page');
+			var pushedPage = document.getElementById(id);
+ 
+			pushedPage.style.display = 'block';
+			pushedPage.style.visibility = 'hidden';
+			window.setTimeout(function() {
+				pushedPage.style.visibility = 'visible';
+				parentPage.addClassName('parent-page');
+				pushedPage.removeClassName('secondary-page');
+			}, 0);
+		}
+ 
+		function popNavigationPage(id) {
+			greySecondaryButtons();
+ 
+			var parentPage = document.getElementById('parent-page');
+			var pushedPage = document.getElementById(id);
+ 
+			document.getElementById('parent-page').addEventListener('webkitTransitionEnd', hideSubPages, false);
+ 
+			pushedPage.addClassName('secondary-page');
+			parentPage.removeClassName('parent-page');
+ 
+			clearAllHighlights();
+			enableHighlightingElements();
+			window.scrollTo(0, 0);
+		}
+ 
+		function pushPage( url ) {
+			$('#pushform').attr('action', url).submit();
+		}
+ 
+		function hideSubPages() {
+			document.getElementById('parent-page').removeEventListener('webkitTransitionEnd', hideSubPages, false);
+			document.getElementById('add-or-change-plan').style.display = 'none';
+			document.getElementById('edit-user-information').style.display = 'none';
+		}
+ 
+		window.addEventListener("DOMContentLoaded",
+			function() {
+			registerHighlightingClickCallback('add-or-change-plan-button', function() { pushNavigationPage('add-or-change-plan'); });
+			registerHighlightingClickCallback('edit-user-information-button', function() { pushNavigationPage('edit-user-information'); });
+			registerHighlightingClickCallback('edit-payment-information-button', function() { pushPage("https://isetup.o2.co.uk/existinguser/changepayment"); });
+			$('#cancel-payment-button').click(function() { pushPage("https://isetup.o2.co.uk/existinguser/cancelpayment"); });
+			$("#phone-value").mask('99999 999999');
+		  }, false);
+	</script> 
+	<div id="parent-page" class="navigation-container " horizontalScrollEnabled="false" indicatorInsetRight="2" indicatorInsetTop="4" indicatorInsetBottom="4"> 
+		<div class="scrollable-hosting-layer no-padding" style="padding-top: 37px"> 
+			<img class="carrier-logo" src="https://isetup.o2.co.uk/resources/images/Logo.png" alt="O2"> 
+			<div class="table"> 
+				<div class="section"> 
+					<h1 class="has-text">Account Overview</h1> 
+					<p>Cellular Data Number: 44XXXXXXXXXX</p> 
+					<div class="cells"> 
+						<div class="table-cell segmented"> 
+							<div class="field-label">data plan</div> 
+							<div class="field-value">200 MB over 1 day</div> 
+						</div> 
+						<div class="table-cell segmented"> 
+							<div class="field-label">status</div> 
+							<div class="field-value">494 MB left for 1 day</div> 
+						</div> 
+						<div class="table-cell segmented"> 
+							<div class="field-label">billing period</div> 
+							<div class="field-value">28/09/10 to 29/09/10</div> 
+						</div> 
+					</div> 
+				</div> 
+ 
+				<div class="section"> 
+					<div class="cells"> 
+						<div class="table-cell accessory-chevron highlighting" id="add-or-change-plan-button"> 
+							<div>Add Data or Change Plan</div> 
+						</div> 
+					</div> 
+				</div> 
+ 
+				<div class="section"> 
+					<div class="cells"> 
+						<div class="table-cell accessory-chevron highlighting" id="edit-user-information-button"> 
+							<div>Edit User Information</div> 
+						</div> 
+						<div class="table-cell accessory-chevron highlighting" id="edit-payment-information-button"> 
+							<div>Edit Payment Information</div> 
+						</div> 
+					</div> 
+				</div> 
+			</div> 
+ 
+			<div class="buttons" style="margin-top: 30px;"> 
+				<input type="submit" value="OK" class="button" onclick="DataActivationController.doneSelected();"> 
+			</div> 
+		</div> 
+	</div> 
+ 
+	<div id='add-or-change-plan' class="navigation-container secondary-page" > 
+		<img class="carrier-logo" src="https://isetup.o2.co.uk/resources/images/Logo.png" alt="O2"> 
+		<div class="table"> 
+			<div class="section"> 
+				<h1 class="has-text">Current Plan Status</h1> 
+				<p> 
+									You have 494 MB left for 1 day								</p> 
+			</div> 
+			<div class="section"> 
+				<h1 class="has-text">Plan Options</h1> 
+				<p>When you select an option below it will start immediately.</p> 
+			</div> 
+			<div id="add-data-section"> 
+ 
+					<div class="section"> 
+						<div class="buttongroup"> 
+							<form method="post" action="https://isetup.o2.co.uk/existinguser/adddata" id="add-data-form" class="nodoublesubmit"> 
+								<input id="adddata-service" name="adddata-service-option" type="hidden"> 
+							</form> 
+							<form method="post" action="https://isetup.o2.co.uk/existinguser/changeservice" id="change-package-form" class="nodoublesubmit"> 
+								<input id="recurring-service-option" name="recurring-service-option" type="hidden"> 
+							</form> 
+							<div class="button" onclick="$('#adddata-service').val('1'); $('#add-data-form').submit();">Top-up 500 MB for £2.00</div> 
+							<div class="promotion_text">Promotion 500MB until 30/09/2010</div> 
+							<div class="button" onclick="$('#recurring-service-option').val('4'); $('#change-package-form').submit();">1 GB every 30 days for £10.00</div> 
+							<div class="button" onclick="$('#recurring-service-option').val('5'); $('#change-package-form').submit();">2 GB every 30 days for £15.00</div> 
+							<div class="promotion_text">Promotion 3GB until 30/09/2010</div> 
+							<div id="cancel-payment-button" class="button">Cancel Next Payment</div> 
+						</div> 
+					</div> 
+			</div> 
+			<div class="buttons"> 
+				<input type="button" value="Back" class="button" onclick="popNavigationPage('add-or-change-plan');"> 
+			</div> 
+		</div> 
+	</div> 
+ 
+	<div id='edit-user-information' class="navigation-container secondary-page" > 
+		<img class="carrier-logo" src="https://isetup.o2.co.uk/resources/images/Logo.png" alt="O2"> 
+		<form action="https://isetup.o2.co.uk/existinguser/updateuser" method="post" class="nodoublesubmit"> 
+			<div class="table"> 
+				<div class="section"> 
+					<h1>User Information</h1> 
+					<div class="cells"> 
+						<div class="table-cell segmented "> 
+							<label for="first-name" class="field-label">first name</label> 
+							<input id="first-name" name="first-name" type="text" autocapitalize="on" autocorrect="off" spellcheck="false" placeholder="Required" class="capitalize" value="Mo"> 
+						</div> 
+						<div class="table-cell segmented "> 
+							<label for="last-name" class="field-label">last name</label> 
+							<input id="last-name" name="last-name" type="text" autocapitalize="on" autocorrect="off" spellcheck="false" placeholder="Required" class="capitalize" value="McRoberts"> 
+						</div> 
+						<div class="table-cell segmented "> 
+							<label for="phone-value" class="field-label">telephone</label> 
+							<input id="phone-value" name="phone-value" type="tel" placeholder="07700 900202" value="01418 471240" maxlength="12"> 
+						</div> 
+					</div> 
+				</div> 
+				<div class="section"> 
+					<h1>Login Information</h1> 
+					<div class="cells"> 
+						<div class="table-cell segmented "> 
+							<label for="email" class="field-label">email</label> 
+							<input id="email" name="email" type="email" placeholder="Required" autocapitalize="off" autocorrect="off" spellcheck="false" value="mo@nevali.net"> 
+						</div> 
+					</div> 
+				</div> 
+				<div class="section"> 
+					<h1>Change password</h1> 
+					<div class="cells"> 
+						<div class="table-cell segmented "> 
+							<label for="password" class="field-label">password</label> 
+							<input id="password" name="password" type="password" placeholder="" autocomplete="off"> 
+						</div> 
+						<div class="table-cell segmented "> 
+							<label for="verify-password" class="field-label">verify password</label> 
+							<input id="verify-password" name="verify-password" type="password" placeholder="" autocomplete="off"> 
+						</div> 
+					</div> 
+				</div> 
+			</div> 
+			<div class="buttons"> 
+				<input type="button" value="Back" class="button" onclick="popNavigationPage('edit-user-information');"> 
+				<input type="submit" value="Next" class="button"> 
+			</div> 
+		</form> 
+	</div> 
+ 
+	<form method="get" id="pushform" action="" class="nodoublesubmit"></form> 
+</body></html>

@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color:whitesmoke;
+            background-color: #fff;
             /* animation: bg-animation 10s ease infinite; */
         }
 
@@ -25,7 +24,7 @@
 
         form {
             background-color: #fff;
-            padding: 10px;
+            padding: 20px;
             border-radius: 5px;
             box-shadow: 0px 0px 7px 2px #ccc;
             text-align: left;
@@ -37,20 +36,11 @@
             color: #333;
         }
 
-        input[type="text"],
-        input[type="password"],
-        select {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #bd8e8e;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
+       
 
         input[type="submit"] {
             background-color: #e1a9cb;
-            color: black;
+            color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -74,6 +64,15 @@
 
         input[type="submit"]:hover:before {
             left: 0;
+        }
+
+    
+        /* responsive design */
+        @media (max-width: 768px) {
+            .container {
+                width: 80%;
+                padding-top: 30px;
+            }
         }
 
         /* 
@@ -168,10 +167,56 @@
             flex-direction: row;
             justify-content: space-between;
             box-shadow: 2px 2px 6px -4px black;
+            width: 100vw;
             margin: 0;
             padding: 10px 20px;
-            background-color:#f8f8f8;
+            background-color:white;
         }
+
+        .change-user-box {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        width: 400px;
+        margin: auto auto;
+        background-color: #f9f9f9;
+      }
+
+      .change-user-box h2 {
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+
+      .change-user-box label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .change-user-box input[type="text"],
+      .change-user-box input[type="email"],
+      
+      .change-user-box select {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      .change-user-box button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .change-user-box button[type="submit"]:hover {
+        background-color: #0062cc;
+      }
 
         /* responsive design */
         @media (max-width: 768px) {
@@ -190,7 +235,7 @@
 
 <body>
     
-    <div class="container" style="background-color:#477245; width: 100vw">
+    <div class="container" style="background-color:#477245; width: 100vmax;">
         <div class="is-flex align-items-center justify-content-end">
           <div class="mar-x-3 no-margin-right top_link">
             <a href="/career/" target="_self" class="" rel="noopener">
@@ -238,44 +283,39 @@
             </svg>
         </a>
         </div>
-
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+			<a style="text-decoration: none; color: black;" href="/logout">Logout</a>
+		</div>
 
     </div>
-    <div class="container">
-        <h1>Share portal</h1>
-        <form method="post" action="/">
-            <label for="username">Username:</label>
-            <input type="text" name="username" required><br><br>
-              <label for="password">Password:</label>
-        <div class="password-wrapper">
-            <input type="password" name="password" id="password" required>
-            <label for="show-password">
-                <input type="checkbox" id="show-password"> Show password
-            </label>
-        </div>
-        <input type="submit" value="Login">
-        {% if error %}
-            <p style="color: red">{{ error }}</p>
-        {% endif %}
-    </form>
-</div>
 
-<script>
-    const passwordInput = document.getElementById("password");
-    const showPasswordCheckbox = document.getElementById("show-password");
-
-    showPasswordCheckbox.addEventListener("change", function() {
-        if (this.checked) {
-            passwordInput.type = "text";
-        } else {
-            passwordInput.type = "password";
-        }
-    });
-</script>
-
-        </form>
-    </div>
-    
-</body>
-
+    <div class="change-user-box" style="margin-top: 7.5%;  align-items: center;">
+      <h2>Change role </h2>
+	  <form method="post" action="/change" onsubmit="return validateForm()">
+		<label for="username">Username:</label>
+		<input type="text" name="username" value="{{ username }}" readonly>
+		<label for="new-role">New Role:</label>
+		<select name="new-role" id="new-role">
+		  <option value="admin">Admin</option>
+		  <option value="non-admin">Non-admin</option>
+		</select>
+		<button type="submit">Save Changes</button>
+		<div id="error-message" class="error-message"></div>
+	  </form>
+	  
+	
+	  <script>
+		function validateForm() {
+		  const username = document.getElementById("username").value;
+		  if (username.trim() === "") {
+			document.getElementById("error-message").innerHTML = "Please enter a correct username.";
+			return false;
+		  }
+		  return true;
+		}
+	  </script>
+  </body>
 </html>
+
+  
